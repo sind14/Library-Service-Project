@@ -15,8 +15,17 @@ class BorrowingListView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         qs = Borrowing.objects.all()
+
         if not user.is_staff:
             qs = qs.filter(user=user)
+
+        is_active = self.request.GET.get("is_active")
+        if is_active is not None:
+            if is_active.lower() == "true":
+                qs = qs.filter(actual_return_date__isnull=True)
+            elif is_active.lower() == "false":
+                qs = qs.exclude(actual_return_date__isnull=True)
+
         return qs
 
 
