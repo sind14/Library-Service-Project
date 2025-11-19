@@ -3,7 +3,6 @@ from rest_framework import status
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from .factories import UserFactory
-from users.serializers import UserSerializer
 
 
 class TestUserViews(APITestCase):
