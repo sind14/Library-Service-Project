@@ -2,11 +2,9 @@ from typing import cast
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-
-from books.serializers import BookSerializer
 from .factories import BookFactory
 from books.models import Book
+from ..users.factories import UserFactory
 
 
 class TestBookViews(APITestCase):
@@ -15,12 +13,8 @@ class TestBookViews(APITestCase):
 
         self.client : APIClient = APIClient()
         self.book = cast(Book, BookFactory())
-        self.admin = get_user_model().objects.create_superuser(
-            email="admin@test.com", password="admin1234"
-        )
-        self.user = get_user_model().objects.create_user(
-            email="user@test.com", password="user1234"
-        )
+        self.admin = UserFactory.create(is_superuser=True, is_staff=True)
+        self.user = UserFactory.create()
         self.list_url = reverse("books-list")
         self.detail_url = reverse("books-detail", args=[self.book.id])
 
@@ -34,17 +28,13 @@ class TestBookViews(APITestCase):
 
     def test_user_cannot_create_book(self):
         self.client.force_authenticate(self.user)
-        book = BookFactory.build()
-        data = BookSerializer(book).data
-        data.pop("id", None)
+        data = BookFactory.dict()
         response = self.client.post(self.list_url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_admin_can_create_book(self):
         self.client.force_authenticate(self.admin)
-        book = BookFactory.build()
-        data = BookSerializer(book).data
-        data.pop("id", None)
+        data = BookFactory.dict()
         response = self.client.post(self.list_url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(BookFactory._meta.model.objects.count(), 2)

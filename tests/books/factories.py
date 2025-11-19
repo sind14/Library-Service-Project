@@ -12,3 +12,14 @@ class BookFactory(factory.django.DjangoModelFactory):
     cover = "HARD"
     inventory = 5
     daily_fee = "3.00"
+
+    @classmethod
+    def dict(cls, **kwargs):
+        obj = cls.build(**kwargs)
+        return {
+            "title": obj.title,
+            "author": obj.author,
+            "cover": obj.cover,
+            "inventory": obj.inventory,
+            "daily_fee": str(obj.daily_fee),
+        }

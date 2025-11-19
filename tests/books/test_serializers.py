@@ -16,13 +16,8 @@ class TestBookSerializer(TestCase):
         self.assertEqual(str(serializer.data["daily_fee"]), str(book.daily_fee))
 
     def test_validation_error_on_empty_title(self):
-        data = {
-            "title": "",
-            "author": "Author",
-            "cover": "HARD",
-            "inventory": 5,
-            "daily_fee": "3.00",
-        }
+        data = BookFactory.dict()
+        data["title"] = ""
         serializer = BookSerializer(data=data)
         self.assertFalse(serializer.is_valid())
         self.assertIn("title", serializer.errors)
