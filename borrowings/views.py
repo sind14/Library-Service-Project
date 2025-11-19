@@ -30,6 +30,11 @@ class BorrowingListView(generics.ListCreateAPIView):
 
 
 class BorrowingDetailView(generics.RetrieveAPIView):
-    queryset = Borrowing.objects.all()
     serializer_class = BorrowingReadSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        qs = Borrowing.objects.all()
+        if not self.request.user.is_staff:
+            qs = qs.filter(user=self.request.user)
+        return qs
