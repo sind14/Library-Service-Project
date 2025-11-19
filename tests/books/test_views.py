@@ -36,7 +36,7 @@ class TestBookViews(APITestCase):
         self.client.force_authenticate(self.user)
         book = BookFactory.build()
         data = BookSerializer(book).data
-        data.pop('id', None)
+        data.pop("id", None)
         response = self.client.post(self.list_url, data)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -44,7 +44,7 @@ class TestBookViews(APITestCase):
         self.client.force_authenticate(self.admin)
         book = BookFactory.build()
         data = BookSerializer(book).data
-        data.pop('id', None)
+        data.pop("id", None)
         response = self.client.post(self.list_url, data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(BookFactory._meta.model.objects.count(), 2)
