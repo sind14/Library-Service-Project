@@ -1,10 +1,14 @@
+from django.utils import timezone
 from rest_framework import serializers
+
+from users.serializers import UserSerializer
 from .models import Borrowing
 from books.serializers import BookSerializer
 
 
 class BorrowingReadSerializer(serializers.ModelSerializer):
     book = BookSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = Borrowing
@@ -38,6 +42,7 @@ class BorrowingCreateSerializer(serializers.ModelSerializer):
 
         borrowing = Borrowing.objects.create(
             user=request.user,
+            borrow_date=timezone.now().date(),
             **validated_data
         )
         return borrowing
