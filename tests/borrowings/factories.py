@@ -7,8 +7,10 @@ from borrowings.models import Borrowing
 
 
 class BorrowingFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = Borrowing
+        skip_postgeneration_save = True
 
     borrow_date = factory.LazyFunction(lambda: timezone.now().date())
     expected_return_date = factory.LazyFunction(lambda: timezone.now().date() + timedelta(days=7))

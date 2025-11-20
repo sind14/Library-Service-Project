@@ -6,6 +6,7 @@ class BookFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Book
+        skip_postgeneration_save = True
 
     title = factory.Faker("sentence", nb_words=3)
     author = factory.Faker("name")
