@@ -9,6 +9,7 @@ This is a Django REST API project for managing books, users, and borrowings in a
 - [Installation](#installation)
 - [Environment Variables](#environment-variables)
 - [Running the Project](#running-the-project)
+- [Docker](#docker)
 - [API Endpoints](#api-endpoints)
 - [Authentication](#authentication)
 - [Custom Endpoints](#custom-endpoints)
@@ -72,6 +73,36 @@ Run the development server:
 
 ```
 python manage.py runserver
+```
+
+---
+
+## Docker
+
+### To run the project in Docker:
+
+Build the Docker image:
+
+```
+docker compose build
+```
+
+Start the container:
+
+```
+docker compose up
+```
+
+● The Django development server will run at: ```http://localhost:8000/```
+
+● SQLite database is persisted in a Docker volume (```sqlite_data```)
+
+### Stop the container:
+
+Press ```CTRL+C``` in the terminal or run:
+
+```
+docker compose down
 ```
 
 ---

@@ -1,0 +1,15 @@
+services:
+  web:
+    build: .
+    container_name: library_service
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - sqlite_data:/app/db
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  sqlite_data:
